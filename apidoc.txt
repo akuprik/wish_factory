@@ -1,0 +1,49 @@
+1. Авторизация
+ресурс :    /api-token-auth
+тип запроса : POST
+запрос : {"username":"<usename>","password":"<password>"}
+
+ответ
+code : 200
+body : {"token": "1bed5252e0e161d076dc7c382c5460244d8ffb86"}
+
+OAuth 2.0
+
+
+2. Добавить опрос
+Авторизованный пользователь
+
+ресурс :  /api/poll/
+тип запроса : POST
+
+   {
+        "name": "<poll name>",
+        "start_date": "<YYYY-MM-DD>",
+        "stop_date": "<YYYY-MM-DD>",
+        "description": "<text>"
+    },
+
+
+2. Изменить опрос
+Авторизованный пользователь
+
+ресурс :  /api/poll/{pk}/
+тип запроса : PATCH / PUT
+
+   {
+        "name": "<poll name>",
+        "start_date": "<YYYY-MM-DD>",  #при PATCH можно не указывать,
+        # изменяться не будет, при PUT указать, но изменений не будет
+
+        "stop_date": "<YYYY-MM-DD>",
+        "description": "<text>"
+    },
+
+3. Удалить опрос
+Авторизованный пользователь
+
+ресурс :  /api/poll/{pk}/
+тип запроса : DELETE
+
+
+
