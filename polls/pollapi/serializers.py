@@ -28,3 +28,25 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ('pk', 'poll_user', 'question', 'answer')
+
+
+class UserPollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poll
+        fields = ('pk', 'name',
+                  'description',
+                  'questions',
+                  )
+
+
+class UserQuestionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = (
+            'pk',
+            'question_type',
+            'poll',
+            'question_text',
+            'answer_variants',
+        )
+

@@ -5,14 +5,20 @@ from .views import (PollViewSet,
                     QuestionViewSet,
                     AnswerVariantViewSet,
                     AnswerViewSet,
+                    UserPollViewSet,
+                    UserQuestionViewSet,
+                    UserAnswerVariantViewSet,
                     )
 
 router = DefaultRouter()
 
-router.register('poll', PollViewSet)
-router.register('question', QuestionViewSet)
-router.register('a-variant', AnswerVariantViewSet)
-router.register('answer', AnswerViewSet)
+router.register('adm/poll', PollViewSet)
+router.register('adm/question', QuestionViewSet)
+router.register('adm/a-variant', AnswerVariantViewSet)
+router.register('adm/answer', AnswerViewSet)
+router.register('polls', UserPollViewSet)
+router.register('questions', UserQuestionViewSet)
+router.register('a-variants', UserAnswerVariantViewSet)
 
 
 urlpatterns = [

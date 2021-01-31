@@ -55,7 +55,7 @@ class Answer(models.Model):
     или pk варианта ответа для QT_SELECT и QT_MULTI_SELECT
     """
     poll_user = models.ForeignKey(PollUser, on_delete=models.CASCADE,
-                                 related_name='answers')
+                                  related_name='answers')
     question = models.ForeignKey(Question, on_delete=models.CASCADE,
                                  related_name='answers')
     answer = models.TextField()

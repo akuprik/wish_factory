@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -7,7 +8,9 @@ from .models import Poll, Question, AnswerVariant, Answer
 from .serializers import (PollSerializer,
                           QuestionSerializer,
                           AnswerVariantSerializer,
-                          AnswerSerializer
+                          AnswerSerializer,
+                          UserPollSerializer,
+                          UserQuestionsSerializer,
                           )
 
 
@@ -18,8 +21,6 @@ class PollViewSet(viewsets.ModelViewSet):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
     permission_classes = [IsAuthenticated]
-    #filter_backends = [DjangoFilterBackend, ]
-    #filterset_fields = ['group', ]
 
 
     def perform_create(self, serializer):
@@ -49,6 +50,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class AnswerVariantViewSet(viewsets.ModelViewSet):
@@ -57,6 +59,7 @@ class AnswerVariantViewSet(viewsets.ModelViewSet):
     """
     queryset = AnswerVariant.objects.all()
     serializer_class = AnswerVariantSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class AnswerViewSet(viewsets.ModelViewSet):
@@ -65,4 +68,40 @@ class AnswerViewSet(viewsets.ModelViewSet):
     """
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class UserPollViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Для выдачи пользователю списка опросов
+    """
+    queryset = Poll.objects.filter(start_date__lte=datetime.datetime.today()).\
+        filter(stop_date__gte=datetime.datetime.today())
+    serializer_class = UserPollSerializer
+
+
+class UserQuestionViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Для выдачи пользователю вопроса
+    """
+    queryset = Question.objects.filter(poll__in=
+        Poll.objects.filter(start_date__lte=datetime.datetime.today()).\
+        filter(stop_date__gte=datetime.datetime.today()))
+    serializer_class = UserQuestionsSerializer
+
+
+class UserAnswerVariantViewSet(viewsets.ReadOnlyModelViewSet):
+    """"
+    Дя выдачи пользователю вариантов ответов на вопросы
+    """
+    queryset = AnswerVariant.objects.filter(
+        question__in=Question.objects.filter(
+            poll__in=Poll.objects.filter(
+                start_date__lte=datetime.datetime.today()). \
+                filter(stop_date__gte=datetime.datetime.today())
+            )
+        )
+    serializer_class = AnswerVariantSerializer
+
+
 
